@@ -1,0 +1,113 @@
+/* General styling for status display */
+.status-pending,
+.status-approved,
+.status-rejected {
+    font-weight: bold; /* Ensure all statuses have bold text */
+    padding: 5px 10px; /* Add padding inside the box */
+    border-radius: 5px; /* Rounded corners */
+    display: inline-block; /* Keep status as inline block */
+    text-align: center; /* Center the text inside the box */
+}
+
+/* Pending status - Orange color with box */
+.status-pending {
+    color: #FFA500; /* Orange color */
+    background-color: #fff3cd; /* Light orange background */
+    border: 2px solid #FFA500; /* Orange border */
+}
+
+/* Approved status - Green color with box */
+.status-approved {
+    color: #28a745; /* Green color */
+    background-color: #d4edda; /* Light green background */
+    border: 2px solid #28a745; /* Green border */
+}
+
+/* Rejected status - Red color with box */
+.status-rejected {
+    color: #dc3545; /* Red color */
+    background-color: #f8d7da; /* Light red background */
+    border: 2px solid #dc3545; /* Red border */
+}
+
+/* Optional: Fallback color for unsupported statuses */
+.status-unknown {
+    color: #6c757d; /* Gray color */
+    background-color: #e2e3e5; /* Light gray background */
+    border: 2px solid #6c757d; /* Gray border */
+}
+
+/* Styling the select dropdown */
+#edit_status_gaji {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    width: 100%;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+}
+
+#edit_status_gaji:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+#edit_status_gaji option {
+    padding: 10px;
+    font-weight: bold;
+}
+
+#edit_status_gaji option[value="PENDING"] {
+    color: #FFA500;
+    background-color: #fff3cd;
+}
+
+#edit_status_gaji option[value="APPROVED"] {
+    color: #28a745;
+    background-color: #d4edda;
+}
+
+#edit_status_gaji option[value="REJECTED"] {
+    color: #dc3545;
+    background-color: #f8d7da;
+}
+
+#edit_status_gaji option:hover {
+    background-color: #eaeaea;
+}
+
+#edit_status_gaji::-ms-expand {
+    display: none;
+}
+
+#edit_status_gaji {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB...');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.fv-row .fw-semibold {
+    font-weight: 600;
+    font-size: 15px;
+    color: #333;
+}
+
+.fv-row label {
+    margin-bottom: 8px;
+}
+
+input:invalid,
+select:invalid {
+    border-color: #dc3545;
+}
+
+input:valid,
+select:valid {
+    border-color: #28a745;
+}

@@ -1,0 +1,329 @@
+{% extends 'layouts/base_layouts.html' %}
+{% load static %}
+
+{% block main %}
+
+<!--begin::Container-->
+<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
+    <!--begin::Post-->
+    <div class="content flex-row-fluid" id="kt_content">
+        <!--begin::Card-->
+        <div class="card">
+            <!--begin::Card header-->
+            <div class="card-header border-0 pt-6">
+                <!--begin::Card title-->
+                <div class="card-title">
+                    <!--begin::Search-->
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" data-kt-user-table-filter="search"
+                            class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
+                    </div>
+                    <!--end::Search-->
+                </div>
+                <!--begin::Card title-->
+                <!--begin::Card toolbar-->
+                <div class="card-toolbar">
+                    <!--begin::Toolbar-->
+                    <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                        <!--begin::Add user-->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#kt_modal_add_user">
+                            <i class="ki-duotone ki-plus fs-2"></i>Add User</button>
+                        <!--end::Add user-->
+                    </div>
+                    <!--end::Toolbar-->
+
+
+                    <!-- Add User Modal -->
+                    <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="fw-bold">Add New User</h2>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Add User Form -->
+                                    <form method="POST" action="{% url 'myapp:user' %}">
+                                        {% csrf_token %}
+
+                                        <div class="row">
+                                            <!-- Kolom Kiri -->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="add-email" class="form-label">Email</label>
+                                                    <input type="email" name="email" class="form-control" id="add-email"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="add-first-name" class="form-label">First Name</label>
+                                                    <input type="text" name="first_name" class="form-control"
+                                                        id="add-first-name" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="add-phone" class="form-label">Phone</label>
+                                                    <input type="text" name="phone" class="form-control" id="add-phone"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="add-password" class="form-label">Password</label>
+                                                    <input type="password" name="password" class="form-control"
+                                                        id="add-password" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirm_password" class="form-label">Confirm
+                                                        Password</label>
+                                                    <input type="password" name="confirm_password" class="form-control"
+                                                        id="confirm_password" required>
+                                                </div>
+                                            </div>
+
+                                            <!-- Kolom Kanan -->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="add-username" class="form-label">Username</label>
+                                                    <input type="text" name="username" class="form-control"
+                                                        id="add-username" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="add-last-name" class="form-label">Last Name</label>
+                                                    <input type="text" name="last_name" class="form-control"
+                                                        id="add-last-name" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="add-department" class="form-label">Department</label>
+                                                    <select name="departement" id="add-department" class="form-control">
+                                                        {% for dept in departements %}
+                                                        <option value="{{ dept.id }}">{{ dept.nama }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="add-role" class="form-label">Role</label>
+                                                    <select name="role" id="add-role" class="form-control">
+                                                        <option value="superadmin">Superadmin</option>
+                                                        <option value="admin">Admin</option>
+                                                        <option value="staffdepartement">Staff Departement</option>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-primary">Save User</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Edit User Modal -->
+                    <div class="modal fade" id="kt_modal_edit_user" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="fw-bold">Edit User</h2>
+                                    <!--begin::Close-->
+                                    <div class="btn btn-icon btn-sm btn-active-icon-primary"
+                                        data-kt-users-modal-action="close" data-bs-dismiss="modal">
+                                        <i class="ki-duotone ki-cross fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Edit User Form -->
+                                    <form method="POST" action="{% url 'myapp:update_user' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" id="edit-user-id">
+
+                                        <div class="row">
+                                            <!-- Kolom Kiri -->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="edit-email" class="form-label">Email</label>
+                                                    <input type="email" name="email" class="form-control"
+                                                        id="edit-email" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-first-name" class="form-label">First Name</label>
+                                                    <input type="text" name="first_name" class="form-control"
+                                                        id="edit-first-name" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-phone" class="form-label">Phone</label>
+                                                    <input type="text" name="phone" class="form-control" id="edit-phone"
+                                                        required>
+                                                </div>
+                                            </div>
+
+                                            <!-- Kolom Kanan -->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="edit-username" class="form-label">Username</label>
+                                                    <input type="text" name="username" class="form-control"
+                                                        id="edit-username" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-last-name" class="form-label">Last Name</label>
+                                                    <input type="text" name="last_name" class="form-control"
+                                                        id="edit-last-name" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-department" class="form-label">Department</label>
+                                                    <select name="departement" id="edit-department"
+                                                        class="form-control">
+                                                        {% for dept in departements %}
+                                                        <option value="{{ dept.id }}">{{ dept.nama }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Full-width Field -->
+                                        <div class="mb-3">
+                                            <label for="edit-role" class="form-label">Role</label>
+                                            <select name="role" id="edit-role" class="form-control" required>
+                                                <option value="superadmin">Superadmin</option>
+                                                <option value="admin">Admin</option>
+                                                <option value="StafDepartemen">Staff Departement</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <!--end::Card toolbar-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Card body-->
+            <div class="card-body py-4">
+                <!--begin::Table-->
+                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+                    <thead>
+                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+
+                            <th class="min-w-1px">No</th>
+                            <th class="min-w-125px">Name</th>
+                            <th class="min-w-125px">Email</th>
+                            <th class="min-w-125px">Role</th>
+                            <th class="min-w-125px">Departement</th>
+                            <th class="min-w-125px">Joined Date</th>
+                            <th class="text-end min-w-100px">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 fw-semibold">
+                        {% for user in user %}
+                        <tr data-username="{{ user.username }}" data-email="{{ user.email }}"
+                            data-role="{{ user.role }}">
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ user.get_full_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ user.departement }}</td>
+                            <td>{{ user.date_joined|date:"d M Y, h:i a" }}</td>
+                            <td>
+                                <!-- User Table and Modals -->
+                                <div class="d-flex justify-content-end flex-shrink-0">
+                                    <!-- Edit User Button -->
+                                    <button type="button"
+                                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                        data-bs-toggle="modal" data-bs-target="#kt_modal_edit_user"
+                                        data-user-id="{{ user.user_id }}" data-email="{{ user.email }}"
+                                        data-username="{{ user.username }}" data-first-name="{{ user.first_name }}"
+                                        data-last-name="{{ user.last_name }}" data-phone="{{ user.phone }}"
+                                        data-department-id="{{ user.departement.id }}" data-role="{{ user.role }}">
+                                        <i class="ki-duotone ki-pencil fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </button>
+
+
+                                    <!-- Delete User Form -->
+                                    <form method="POST" action="{% url 'myapp:delete_user' %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                                        <button type="submit"
+                                            class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                            <i class="ki-duotone ki-trash fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No departments found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!--end::Table-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+    </div>
+    <!--end::Post-->
+</div>
+<!--end::Container-->
+
+
+
+
+
+
+<!--begin::Javascript-->
+<script>var hostUrl = "{% static 'assets/' %}";</script>
+<!--begin::Global Javascript Bundle(mandatory for all pages)-->
+<script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+<!--end::Global Javascript Bundle-->
+<!--begin::Vendors Javascript(used for this page only)-->
+<script src="{% static 'assets/plugins/custom/datatables/datatables.bundle.js' %}"></script>
+<!--end::Vendors Javascript-->
+<!--begin::Custom Javascript(used for this page only)-->
+
+<script src="{% static 'assets/js/custom/apps/user-management/users/list/export-users.js' %}"></script>
+<script src="{% static 'assets/js/custom/apps/user-management/users/list/add.js' %}"></script>
+<script src="{% static 'assets/js/widgets.bundle.js' %}"></script>
+<script src="{% static 'assets/js/custom/widgets.js' %}"></script>
+<script src="{% static 'assets/js/custom/apps/chat/chat.js' %}"></script>
+<script src="{% static 'assets/js/custom/utilities/modals/upgrade-plan.js' %}"></script>
+<script src="{% static 'assets/js/custom/utilities/modals/create-app.js' %}"></script>
+<script src="{% static 'assets/js/custom/utilities/modals/users-search.js' %}"></script>
+<script src="{% static 'assets/js/custom/user/user.js' %}"></script>
+<!--end::Custom Javascript-->
+<!--end::Javascript-->
+
+{% endblock %}
